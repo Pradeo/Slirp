@@ -41,7 +41,7 @@ MANEXT = 1
 
 all: ${srcdir}/configure Makefile config.h slirp
 
-slirp: $(PROTO) $(OBJ)
+slirp: $(OBJ)
 	$(CC) @LDFLAGS@ -o slirp $(OBJ) $(LIBS)
 
 install: slirp install.man
