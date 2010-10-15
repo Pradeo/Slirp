@@ -1,6 +1,5 @@
-void debug_init _P((char *, int));
-void dump_packet _P((void *, int));
-void ttystats _P((struct ttys *));
+void debug_init _P((char, int));
+void ttystats _P((struct ttys));
 void allttystats _P((void));
 void ipstats _P((void));
 void vjstats _P((void));

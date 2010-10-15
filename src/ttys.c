@@ -11,6 +11,8 @@
 #endif
 #include <slirp.h>
 
+void lcp_lowerdown(int unit);
+
 struct ttys *ttys_unit[MAX_INTERFACES];
 
 int slirp_forked;
@@ -92,9 +94,9 @@ tty_attach(unit, device)
 
 	/* Config the new tty */
 	if ((bptr = (char *)getenv("HOME")))
-	   sprintf(buff, "%s/.slirprc-%d", bptr, unit);
+	   snprintf(buff, sizeof(buff), "%s/.slirprc-%d", bptr, unit);
 	else
-	   sprintf(buff, ".slirprc-%d", unit);
+	   snprintf(buff, sizeof(buff), ".slirprc-%d", unit);
 	config(buff, ttyp->unit);
 
 	return ttyp;

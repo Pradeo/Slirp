@@ -27,6 +27,8 @@
 #define GIDSET_TYPE	int
 #endif
 
+#include <ctype.h>
+
 void readable _P((int fd));
 
 /*
@@ -1103,7 +1105,11 @@ cfg_version(buff, inso)
 	char *buff;
 	struct socket *inso;
 {
+#ifndef FULL_BOLT
 	lprint("Slirp v%s (%s)\r\n", SLIRP_VERSION, SLIRP_STATUS);
+#else
+	lprint("Slirp v%s (%s) FULL_BOLT\r\n", SLIRP_VERSION, SLIRP_STATUS);
+#endif
 
 	return CFG_OK;
 }

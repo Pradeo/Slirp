@@ -9,6 +9,7 @@
 #define WANT_SYS_IOCTL_H
 #define WANT_TERMIOS_H
 #include <slirp.h>
+#include <ctype.h>
 #include "main.h"
 
 struct timeval tt;
@@ -73,7 +74,11 @@ main(argc, argv)
 	lprint_ptr2 = (char *)stderr;
 	lprint_arg = (char **)&lprint_ptr2;
 
+#ifndef FULL_BOLT
 	lprint("Slirp v%s (%s)\n\n", SLIRP_VERSION, SLIRP_STATUS);
+#else
+	lprint("Slirp v%s (%s) FULL_BOLT\n\n", SLIRP_VERSION, SLIRP_STATUS);
+#endif
 
 	lprint("Copyright (c) 1995,1996 Danny Gasparovski and others.\n");
 	lprint("All rights reserved.\n");
@@ -990,10 +995,10 @@ cont_1:
 		char *device = dev;
 #ifndef NO_UNIX_SOCKETS
 		struct sockaddr_un sock_un;
-		int sock_len = sizeof(struct sockaddr_un);
+		socklen_t sock_len = sizeof(struct sockaddr_un);
 #endif
 		struct sockaddr_in sock_in;
-		int sock_len2 = sizeof(struct sockaddr_in);
+		socklen_t sock_len2 = sizeof(struct sockaddr_in);
 
 		fd = -1;
 		if (slirp_socket_passwd)
@@ -1029,7 +1034,7 @@ cont_1:
 			sleep(1);
 			if (read(fd, buff, 256) < 0) {
 				/* Nuke both connections */
-				sprintf(buff, "0 Connection timed out");
+				snprintf(buff, sizeof(buff), "0 Connection timed out");
 				write(fd, buff, strlen(buff)+1);
 				slirp_socket_wait = curtime;
 				close(fd);
@@ -1041,7 +1046,7 @@ cont_1:
 
 		if (sscanf(buff, "%d %d %256s", &unit, &pid, device) == 3) {
 			if (unit >= MAX_INTERFACES || unit < 0) {
-				sprintf(buff, "0 Unit out of range (must be between 0 and %d, inclusive)", MAX_INTERFACES-1);
+				snprintf(buff, sizeof(buff), "0 Unit out of range (must be between 0 and %d, inclusive)", MAX_INTERFACES-1);
 				write(fd, buff, strlen(buff)+1);
 				slirp_socket_wait = curtime;
 				close(fd);
@@ -1052,7 +1057,7 @@ cont_1:
 			 * (pid is invalid) */
 			if (slirp_socket_passwd) {
 				if (strcmp(slirp_socket_passwd, device) != 0) {
-					sprintf(buff, "0 Incorrect password");
+					snprintf(buff, sizeof(buff), "0 Incorrect password");
 					write(fd, buff, strlen(buff)+1);
 					slirp_socket_wait = curtime;
 					close(fd);
@@ -1076,7 +1081,7 @@ cont_1:
 			 * failure, 1 for exit, and message is printed
 			 */
 			if (ttyp) {
-				sprintf(buff, "0 Unit already attached");
+				snprintf(buff, sizeof(buff), "0 Unit already attached");
 				write(fd, buff, strlen(buff)+1);
 				slirp_socket_wait = curtime;
 				close(fd);
@@ -1090,7 +1095,7 @@ cont_1:
 				   strcpy(buff2, "PPP");
 				else
 #endif
-				   sprintf(buff2, "SLIP, MTU %d, MRU %d", if_mtu, if_mru);
+				   snprintf(buff2, sizeof(buff2), "SLIP, MTU %d, MRU %d", if_mtu, if_mru);
 #ifndef FULL_BOLT
 				snprintf(buff, sizeof(buff),
 					"1 Attached as unit %d, device %s\r\n\r\n[talking %s, %d baud]\r\n\r\nSLiRP Ready ...",
@@ -1111,7 +1116,7 @@ cont_1:
 					ttyp->fd = fd;
 				}
 			} else {
-				sprintf(buff, "0 %s", strerror(errno));
+				snprintf(buff, sizeof(buff), "0 %s", strerror(errno));
 				write(fd, buff, strlen(buff)+1);
 				slirp_socket_wait = curtime;
 				close(fd);
