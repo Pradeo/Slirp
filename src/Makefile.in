@@ -34,9 +34,9 @@ LIBS = @LIBS@
 
 COMMON_H = config.h ${srcdir}/slirp.h
 
-BINDIR = @prefix@/bin
+BINDIR = $(DESTDIR)@prefix@/bin
 
-MANDIR = @prefix@/man/man1
+MANDIR = $(DESTDIR)@prefix@/man/man1
 
 MANEXT = 1
 
