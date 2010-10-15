@@ -1,0 +1,15 @@
+HOWLS!!!  Thank you for pulling this latest release of Slirp.
+
+The new maintainer for Slirp is Kelly "STrRedWolf" Price
+<tygris+slirp@erols.com>.  The homepage is now http://slirp.sourceforge.net
+
+Now, this is a new release with new numbering similar to the Linux kernel,
+so if you see a x.even.x release, it's a stable release, while x.odd.x is a
+developmental release.
+
+Do read the README.NEXT file located here fully.  I(Kelly) am getting alot of
+bug reports that don't have alot of stuff to go on.  Also contained in that 
+file is info on the mailing list.  Read it if you want to mess around with it,
+there's alot to do inside!!!
+
+--Kelly
