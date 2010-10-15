@@ -47,10 +47,10 @@ slirp: $(OBJ)
 
 install: slirp install.man
 	strip slirp
-	cp slirp $(BINDIR)
+	install -D -m 755 slirp $(BINDIR)/slirp
 
 install.man:
-	cp ${srcdir}/slirp.man $(MANDIR)/slirp.$(MANEXT)
+	install -D -m 644 ${srcdir}/slirp.man $(MANDIR)/slirp.$(MANEXT)
 
 objclean:
 	rm -f $(OBJ)
